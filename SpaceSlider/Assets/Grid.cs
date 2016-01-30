@@ -21,9 +21,15 @@ public class Grid : MonoBehaviour {
 			NonMovable,
 			PowerUp,
 		};
-		private CellType m_cellType { get; set;}
+
+		public void SetPosition(float x, float y) { m_position.x = x; m_position.y = y; }
+		public Vector2 GetPosition() { return m_position; }
+
+		private CellType m_cellType { get; set; }
+		private Vector2 m_position;
 	};
 
+	public bool ShowDebugInfo = false;
 	public CellCount Cells;
 	public Vector2 CellDimensions;
 
@@ -40,6 +46,8 @@ public class Grid : MonoBehaviour {
 			m_cells[y] = new List<GridCell>(Cells.X);
 			for (int x = 0; x < m_cells[y].Count; ++x) 
 			{
+				GridCell cell = new GridCell();
+				cell.SetPosition(CellDimensions.x * 0.5f + (x * CellDimensions.x), CellDimensions.y * 0.5f + (y * CellDimensions.y));
 				m_cells[y][x] = new GridCell();
 			}
 		}
@@ -48,6 +56,8 @@ public class Grid : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
 	{
-	
+		if(ShowDebugInfo)
+		{
+		}
 	}
 }

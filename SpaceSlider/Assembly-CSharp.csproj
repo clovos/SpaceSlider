@@ -46,9 +46,12 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\CameraMovement.cs" />
+     <Compile Include="Assets\CoroutineHandler.cs" />
+     <Compile Include="Assets\Game.cs" />
      <Compile Include="Assets\GameObjectPool.cs" />
      <Compile Include="Assets\Grid.cs" />
      <Compile Include="Assets\SpawnManager.cs" />
+     <Compile Include="Assets\UICore.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
