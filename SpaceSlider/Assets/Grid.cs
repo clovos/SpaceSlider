@@ -84,11 +84,11 @@ public class Grid : MonoBehaviour {
 				for (int x = 0; x < m_cells[y].Count; ++x) 
 				{
 					GridCell cell = m_cells[y][x];
-					Vector3 worldPos = new Vector3(cell.GetPosition().x, cell.GetPosition().y, Camera.main.nearClipPlane);
+					Vector3 worldPos = new Vector3(cell.GetPosition().x, cell.GetPosition().y + 0.8f, Camera.main.nearClipPlane);
 					Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos);
-					Rect screenRectangle = new Rect(screenPos.x - 30.0f, screenPos.y - 25.0f, 60.0f, 50.0f);
+					Rect screenRectangle = new Rect(screenPos.x - 18.0f, Screen.height - screenPos.y , 50.0f, 60.0f);
 
-					string text = "(" + worldPos.x.ToString() + ", " + worldPos.y.ToString() + ", " + worldPos.z.ToString() + ")";
+					string text = "x: " + cell.GetPosition().x.ToString() + "\ny: " + cell.GetPosition().y.ToString() + "\nz: " + Camera.main.nearClipPlane.ToString();
 					GUI.Label(screenRectangle, text);
 				}
 			}	

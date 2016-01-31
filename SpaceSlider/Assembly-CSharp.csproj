@@ -46,11 +46,15 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\CameraMovement.cs" />
-	 <Compile Include="Assets\CoroutineHandler.cs" />
+     <Compile Include="Assets\CoroutineHandler.cs" />
      <Compile Include="Assets\Game.cs" />
      <Compile Include="Assets\GameObjectPool.cs" />
+     <Compile Include="Assets\GameStateHandler.cs" />
      <Compile Include="Assets\Grid.cs" />
      <Compile Include="Assets\GridCell.cs" />
+     <Compile Include="Assets\InGameState.cs" />
+     <Compile Include="Assets\MenuState.cs" />
+     <Compile Include="Assets\PlayerInfo.cs" />
      <Compile Include="Assets\SpawnManager.cs" />
      <Compile Include="Assets\UICore.cs" />
  <Reference Include="UnityEngine.UI">

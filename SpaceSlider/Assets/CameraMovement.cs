@@ -51,9 +51,9 @@ public class CameraMovement : MonoBehaviour {
 
 				Vector3 diff = Input.mousePosition - centerPos;
 				Vector3 direction = diff.normalized;
-				//float speed = diff.sqrMagnitude;
+				float speed = diff.sqrMagnitude * 0.0001f;
 
-				transform.position += direction * Time.deltaTime;
+				transform.position += direction * speed * Time.deltaTime;
 			}
 		}
 	}
@@ -70,19 +70,19 @@ public class CameraMovement : MonoBehaviour {
 				+ ", worldMousePos(" + mousePos.x.ToString() + ", " + mousePos.y.ToString() + ")";
 			GUI.Label(screenRectangle, text);
 
-			//Draw arrow
-			Vector3 rayPos = transform.position;
-			rayPos.x -= m_currentVelocity.x * 0.5f;
-			rayPos.y -= m_currentVelocity.y * 0.5f;
-			rayPos.z = Camera.main.nearClipPlane + 0.1f;
-
-			Vector3 direction = m_currentVelocity.normalized;
-			Vector3 right = Quaternion.LookRotation(direction) * Quaternion.Euler(0, 180 + 20, 0) * new Vector3(0, 1, 1);
-			Vector3 left = Quaternion.LookRotation(direction) * Quaternion.Euler(0, 180 - 20, 0) * new Vector3(0, -1, 1);
-
-			Debug.DrawLine(rayPos, direction, new Color(1, 0, 0));
-			Debug.DrawRay(rayPos + direction, right * 0.25f, new Color(1, 0, 0));
-			Debug.DrawRay(rayPos + direction, left * 0.25f, new Color(1, 0, 0));
+//			//Draw arrow
+//			Vector3 rayPos = transform.position;
+//			rayPos.x -= m_currentVelocity.x * 0.5f;
+//			rayPos.y -= m_currentVelocity.y * 0.5f;
+//			rayPos.z = Camera.main.nearClipPlane + 0.1f;
+//
+//			Vector3 direction = m_currentVelocity.normalized;
+//			Vector3 right = Quaternion.LookRotation(direction) * Quaternion.Euler(0, 180 + 20, 0) * new Vector3(0, 1, 1);
+//			Vector3 left = Quaternion.LookRotation(direction) * Quaternion.Euler(0, 180 - 20, 0) * new Vector3(0, -1, 1);
+//
+//			Debug.DrawLine(rayPos, direction, new Color(1, 0, 0));
+//			Debug.DrawRay(rayPos + direction, right * 0.25f, new Color(1, 0, 0));
+//			Debug.DrawRay(rayPos + direction, left * 0.25f, new Color(1, 0, 0));
 		}
 	}
 

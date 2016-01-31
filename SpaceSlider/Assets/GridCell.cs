@@ -72,8 +72,10 @@ public class GridCell
 			if(Input.GetMouseButtonUp(0))
 			{
 				Debug.Log("MouseUp at position x: " + m_position.x.ToString() + "y: " + m_position.y.ToString());
+				string blockTypeId = "Block" + Random.Range(1, 4).ToString();
+				m_currentBlock = GameObjectPool.Instance.GetFromPool(blockTypeId, true);
+				m_currentBlock.transform.position = new Vector3(m_position.x, -m_position.y, Camera.main.nearClipPlane);			
 			}		
 		}
-
 	}
 };

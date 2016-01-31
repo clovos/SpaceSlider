@@ -58,7 +58,7 @@ public class GameObjectPool : MonoBehaviour
 			PoolItem item = Prefabs[i];
 			if(item.Prefab.name == objectType)
 			{
-				if(m_poolOfObjects[i].Count > 0)
+				if(m_poolOfObjects[i].Count > 1)
 				{
 					GameObject pooledObject = m_poolOfObjects[i][0];
 					m_poolOfObjects[i].RemoveAt(0);
@@ -69,7 +69,10 @@ public class GameObjectPool : MonoBehaviour
 
 				if(instantiateIfEmpty) 
 				{
-					return Instantiate(m_poolOfObjects[i][0]) as GameObject;
+					GameObject instantiatedObject = Instantiate(m_poolOfObjects[i][0]) as GameObject;
+					instantiatedObject.transform.parent = null;
+					instantiatedObject.SetActive(true);
+					return instantiatedObject;
 				}
 				break;
 
@@ -105,9 +108,12 @@ public class GameObjectPool : MonoBehaviour
 			int availablePerPrefabType = 0;
 			for(int i = 0; i < m_poolOfObjects.Length; ++i)
 			{
-				availablePerPrefabType = m_poolOfObjects[i].Count;
-				totalAvailableObjects += availablePerPrefabType;
-				text += m_poolOfObjects[i][0].name + ": " + availablePerPrefabType.ToString() + "\n";
+				if(m_poolOfObjects[i].Count > 0)
+				{
+					availablePerPrefabType = m_poolOfObjects[i].Count;
+					totalAvailableObjects += availablePerPrefabType;
+					text += m_poolOfObjects[i][0].name + ": " + availablePerPrefabType.ToString() + "\n";					
+				}
 				availablePerPrefabType = 0;
 			}
 			text += "Total Available Objects: " + totalAvailableObjects.ToString();
