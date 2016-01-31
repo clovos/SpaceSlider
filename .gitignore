@@ -33,3 +33,10 @@ SpaceSlider/Library/metadata/c9/c90800795c5f2434fb62e11a810d2e52
 SpaceSlider/Library/metadata/c9/c90800795c5f2434fb62e11a810d2e52
 SpaceSlider/Library/metadata/00/00000000000000004000000000000000
 SpaceSlider/Library/assetDatabase3
+*.dll
+SpaceSlider/Library/ScriptAssemblies/Assembly-CSharp.dll.mdb
+SpaceSlider/Temp/UnityTempFile-291fc1f49f17d7d41bee6621ef63efaf
+*.backup
+SpaceSlider/Library/ScriptAssemblies/BuiltinAssemblies.stamp
+*.mdb
+SpaceSlider/Temp/bin/Debug/UnityEngine.UI.xml

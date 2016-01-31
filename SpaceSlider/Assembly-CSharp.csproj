@@ -50,6 +50,7 @@
      <Compile Include="Assets\Game.cs" />
      <Compile Include="Assets\GameObjectPool.cs" />
      <Compile Include="Assets\Grid.cs" />
+     <Compile Include="Assets\GridCell.cs" />
      <Compile Include="Assets\SpawnManager.cs" />
      <Compile Include="Assets\UICore.cs" />
  <Reference Include="UnityEngine.UI">

@@ -4,6 +4,8 @@ using System.Collections;
 public class CameraMovement : MonoBehaviour {
 
 	public bool ShowDebugInfo = false;
+	public bool FreeFly = false;
+
     public Vector3 Velocity;
 	public float Acceleration;
 	private Vector3 m_currentVelocity;
@@ -22,23 +24,50 @@ public class CameraMovement : MonoBehaviour {
 				Debug.LogError("The cameras acceleration is ZERO, resulting in no movement!");
 		}
 
-		float currentSpeed = m_currentVelocity.sqrMagnitude;
-		float targetSpeed = Velocity.sqrMagnitude;
-		if(Mathf.Abs(currentSpeed - targetSpeed) < 0.01f)
+		if(!FreeFly)
 		{
-			m_currentVelocity = Velocity;
+			float currentSpeed = m_currentVelocity.sqrMagnitude;
+			float targetSpeed = Velocity.sqrMagnitude;
+			if(Mathf.Abs(currentSpeed - targetSpeed) < 0.01f)
+			{
+				m_currentVelocity = Velocity;
+			}
+			Vector3 target = Velocity - m_currentVelocity;
+			m_currentVelocity += (target.normalized * Acceleration * Time.deltaTime);
+			transform.position += m_currentVelocity;
 		}
-		Vector3 target = Velocity - m_currentVelocity;
-		m_currentVelocity += (target.normalized * Acceleration * Time.deltaTime);
-		transform.position += m_currentVelocity;
+		UpdateFreeFly();
 	}
+	private void UpdateFreeFly()
+	{
+		if(FreeFly)
+		{
+			if(Input.GetMouseButton(1))
+			{
+				Vector3 centerPos = new Vector3();
+				centerPos.x = Screen.width * 0.5f;
+				centerPos.y = Screen.height * 0.5f;
+				centerPos.z = Input.mousePosition.z;
+
+				Vector3 diff = Input.mousePosition - centerPos;
+				Vector3 direction = diff.normalized;
+				//float speed = diff.sqrMagnitude;
+
+				transform.position += direction * Time.deltaTime;
+			}
+		}
+	}
+
 	void OnGUI()
 	{
 		if(ShowDebugInfo)
 		{
+			Vector3 mousePos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10f));
 			Rect screenRectangle = new Rect(0, Screen.height - 20, Screen.width, 20.0f);
 			string text = "Camera position(" + transform.position.x.ToString() + ", " + transform.position.y.ToString() + ", " + transform.position.z.ToString() + ")"
-				+ ", velocity(" + m_currentVelocity.x.ToString() + ", " + m_currentVelocity.y.ToString() + ", " + m_currentVelocity.z.ToString() + ")";
+				+ ", velocity(" + m_currentVelocity.x.ToString() + ", " + m_currentVelocity.y.ToString() + ", " + m_currentVelocity.z.ToString() + ")"
+				+ ", screenMousePos(" + Input.mousePosition.x.ToString() + ", " + Input.mousePosition.y.ToString() + ")"
+				+ ", worldMousePos(" + mousePos.x.ToString() + ", " + mousePos.y.ToString() + ")";
 			GUI.Label(screenRectangle, text);
 
 			//Draw arrow
