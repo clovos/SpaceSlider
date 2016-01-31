@@ -46,7 +46,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\CameraMovement.cs" />
-     <Compile Include="Assets\CoroutineHandler.cs" />
+	 <Compile Include="Assets\CoroutineHandler.cs" />
      <Compile Include="Assets\Game.cs" />
      <Compile Include="Assets\GameObjectPool.cs" />
      <Compile Include="Assets\Grid.cs" />
