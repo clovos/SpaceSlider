@@ -15,8 +15,14 @@ public class GameObjectPool : MonoBehaviour
 
     //Singleton
     public static GameObjectPool Instance { get; private set; }
+
+	//Show debug information (amount of pooled object etc.)
 	public bool ShowDebugInfo = false;
 
+	//A flag that controls the amount of pooled objects, 
+	//if true, its possible to further add objects exceeding 
+	//the pools inited size for each prefab in runtime 
+	public bool AllowedToGrow = true;
 
 	//List of prefabs to initiate the pool with
 	public PoolItem[] Prefabs;
@@ -34,6 +40,7 @@ public class GameObjectPool : MonoBehaviour
         m_containerObject = new GameObject("GameObjectPool");
         m_poolOfObjects = new List<GameObject>[Prefabs.Length];
 
+		//We build up the pools
         int prefabIndex = 0;
         foreach (PoolItem poolItem in Prefabs)
         {
@@ -51,6 +58,8 @@ public class GameObjectPool : MonoBehaviour
         }
     }
 
+	//I thought about not having the "instantiateIfEmpty" flag, but figured it gives me 
+	//more control by giving me the option to instantiate a object or not when the pool is empty
 	public GameObject GetFromPool(string objectType, bool instantiateIfEmpty)
 	{
 		for(int i = 0; i < Prefabs.Length; ++i)
@@ -58,8 +67,10 @@ public class GameObjectPool : MonoBehaviour
 			PoolItem item = Prefabs[i];
 			if(item.Prefab.name == objectType)
 			{
+				//Check so we have atleast 2 objects left, 1 is always kept as a backup for instantiating
 				if(m_poolOfObjects[i].Count > 1)
 				{
+					//Take the first one(fast access) and remove it from the list 
 					GameObject pooledObject = m_poolOfObjects[i][0];
 					m_poolOfObjects[i].RemoveAt(0);
 					pooledObject.transform.parent = null;
@@ -67,15 +78,17 @@ public class GameObjectPool : MonoBehaviour
 					return pooledObject;
 				} 
 
+				//Instatitiates a new object if allowed
 				if(instantiateIfEmpty) 
 				{
+					Debug.Log("Empty pool, consider increasing poolsize of object type: " + objectType);
+
 					GameObject instantiatedObject = Instantiate(m_poolOfObjects[i][0]) as GameObject;
 					instantiatedObject.transform.parent = null;
 					instantiatedObject.SetActive(true);
 					return instantiatedObject;
 				}
 				break;
-
 			}
 		}
 		Debug.Assert(false, "The pool is empty and you didn't want to instantiate a new GameObject of type: " + objectType);
@@ -88,9 +101,24 @@ public class GameObjectPool : MonoBehaviour
 		{
 			if(Prefabs[i].Prefab.name == gameObject.name)
 			{
-				gameObject.SetActive(false);
-				gameObject.transform.parent = m_containerObject.transform;
-				m_poolOfObjects[i].Add(gameObject);
+				//We first check to see if the pools are allowed to grow
+				if(AllowedToGrow)
+				{
+					gameObject.SetActive(false);
+					gameObject.transform.parent = m_containerObject.transform;
+					m_poolOfObjects[i].Add(gameObject);		
+				}
+				//else we check if the pool of the prefabtype already is full
+				else if(Prefabs.Length < Prefabs[i].PoolSize)
+				{
+					gameObject.SetActive(false);
+					gameObject.transform.parent = m_containerObject.transform;
+					m_poolOfObjects[i].Add(gameObject);
+				}
+				else
+				{
+					Debug.Log("Tried to add the object type: " + gameObject.name + ", but the pool is already at maximum capacity.");
+				}
 				return;
 			}
 		}

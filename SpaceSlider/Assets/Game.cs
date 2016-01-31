@@ -9,15 +9,13 @@ public class Game
     public GameStateHandler GameState;
     public PlayerInfo PlayerInfo;
 
-	public bool MapEditorMode = true;
-
     public void GameStartUp()
     {
         UICore = (GameObject.Instantiate(Resources.Load("Prefabs/GUI/UIRoot")) as GameObject).GetComponent<UICore>();
         GameState = new GameStateHandler();
         GameState.Initialize();
 
-        PlayerInfo = new PlayerInfo();
+        PlayerInfo = new PlayerInfo();	
     }
 
     public static Game Instance

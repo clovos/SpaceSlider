@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
+[System.Serializable]
 public class Grid : MonoBehaviour {
 
 	[System.Serializable]
@@ -11,11 +12,13 @@ public class Grid : MonoBehaviour {
 		public int Y;
 	};
 
-	public bool ShowDebugInfo = false;
+	public bool ShowDebugLines = false;
+	public bool ShowDebugPositions = false;
 	public CellCount Cells;
 	public Vector2 CellDimensions;
 
 	private List<List<GridCell>> m_cells;
+	private bool m_isSaved = true;
 
 	void Awake()
 	{
@@ -24,7 +27,7 @@ public class Grid : MonoBehaviour {
 		Vector3 centerPosition = Camera.main.transform.position;
 		float centerX = (Cells.X * CellDimensions.x) * 0.5f;
 		float centerY = (Cells.Y * CellDimensions.y) * 0.5f;
-		float startX = centerPosition.x - centerX;
+		float startX = centerPosition.x;//centerPosition.x - centerX;
 		float startY = centerPosition.y - centerY;
 
 		m_cells = new List<List<GridCell>>(Cells.Y);
@@ -57,9 +60,46 @@ public class Grid : MonoBehaviour {
 		}	
 	}
 
+	public void SetIsSaved(bool isSaved)
+	{
+		m_isSaved = isSaved; 
+	}
+	public bool GetIsSaved()
+	{
+		return m_isSaved;
+	}
+
+	public void Reset()
+	{
+		if(m_cells == null) { return; }
+		for (int y = 0; y < m_cells.Count; ++y) 
+		{
+			for (int x = 0; x < m_cells[y].Count; ++x) 
+			{
+				GridCell cell = m_cells[y][x];
+				if(cell.GetBlock() != null)
+				{
+					GameObjectPool.Instance.AddToPool(cell.GetBlock().gameObject);				
+				}
+			}
+			m_cells[y].Clear();
+		}	
+		m_cells.Clear();
+	}
+
+	public void SetCells(List<List<GridCell>> cells)
+	{
+		m_cells = cells;
+	}
+
+	public List<List<GridCell>> GetCells()
+	{
+		return m_cells;
+	}
+
 	void OnDrawGizmos()
 	{
-		if(ShowDebugInfo)
+		if(ShowDebugLines)
 		{
 			if(m_cells == null) { return; }
 
@@ -75,7 +115,7 @@ public class Grid : MonoBehaviour {
 	}
 	void OnGUI()
 	{
-		if(ShowDebugInfo)
+		if(ShowDebugPositions)
 		{
 			if(m_cells == null) { return; }
 			for (int y = 0; y < m_cells.Count; ++y) 

@@ -2,11 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 
+[System.Serializable]
 public class GridCell
 {		
 	private Block m_currentBlock;
-	private Vector3 m_position;
-	private Vector2 m_dimensions;
+
+	private SerializableVector3 m_position;
+	private SerializableVector2 m_dimensions;
 
 	public GridCell() 
 	{ 
@@ -15,7 +17,8 @@ public class GridCell
 
 	public void SetBlock(Block block) 
 	{ 
-		m_currentBlock = block; 
+		m_currentBlock = block;
+		m_currentBlock.SetParentCell(this);
 	}
 
 	public Block GetBlock() 
@@ -54,32 +57,47 @@ public class GridCell
 		
 		return false;
 	}
-
-	public void Update()
-	{	
-		if(Game.Instance.MapEditorMode)
+		
+	public void UpdateEditorInput()
+	{
+		if(Input.GetMouseButtonUp(0))
 		{
-			if(Input.GetMouseButtonUp(0))
+			if(Input.mousePosition.x > Screen.width * 0.80 && Input.mousePosition.y > Screen.height - (Screen.height * 0.25))
 			{
-				Vector3 mousePos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10f));
-				if(Inside(mousePos.x, mousePos.y))
+				return;
+			}
+			Vector3 mousePos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z));
+			if(Inside(mousePos.x, mousePos.y))
+			{
+				if(m_currentBlock == null)
 				{
-					if(m_currentBlock == null)
-					{
-						string blockTypeId = "BlockPrefab" + Random.Range(1, 4).ToString();
-						GameObject block = GameObjectPool.Instance.GetFromPool(blockTypeId, true);
-						block.transform.position = m_position;
-						m_currentBlock = block.GetComponent<Block>();
-						m_currentBlock.SetParentCell(this);
-					}
+					string blockTypeId = "BlockPrefab" + Random.Range(1, 4).ToString();
+					GameObject block = GameObjectPool.Instance.GetFromPool(blockTypeId, true);
+					block.transform.position = m_position;
+					SetBlock(block.GetComponent<Block>());
+
+					GameObject grid = GameObject.Find("Grid");
+					Grid gridComponent = grid.GetComponent<Grid>();
+					gridComponent.SetIsSaved(false);
 				}
-			}		
+				else
+				{
+					
+				}
+			}
+		}		
+	}
+	public void UpdateInput()
+	{
+		if(MapEditor.Instance)
+		{
+			UpdateEditorInput();
 		}
 		else
 		{
 			if(Input.GetMouseButton(0))
 			{
-				Vector3 mousePos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10f));
+				Vector3 mousePos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z));
 				if(Inside(mousePos.x, -mousePos.y))
 				{	
 					if(m_currentBlock != null)
@@ -89,10 +107,14 @@ public class GridCell
 				}
 			}
 		}
+
+	}
+	public void Update()
+	{	
+		UpdateInput();
 	}
 
 	void PromptBlockType()
 	{
-		
 	}
 };

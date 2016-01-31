@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[System.Serializable]
 public class Block : MonoBehaviour {
 
+	[System.Serializable]
 	public enum BlockProperty
 	{
 		Empty,
@@ -22,7 +24,7 @@ public class Block : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
-		if(m_parentCell != null && !Game.Instance.MapEditorMode)
+		if(m_parentCell != null && !MapEditor.Instance)
 		{
 			Vector3 parentPos = m_parentCell.GetPosition();
 			Vector3 direction = (parentPos - transform.position).normalized;
