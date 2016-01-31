@@ -35,7 +35,7 @@ public class Grid : MonoBehaviour {
 			{
 				GridCell cell = new GridCell();
 				cell.SetDimensions(CellDimensions.x, CellDimensions.y);
-				cell.SetPosition(startX + CellDimensions.x * 0.5f + (x * CellDimensions.x), startY + CellDimensions.y * 0.5f + (y * CellDimensions.y));
+				cell.SetPosition(startX + CellDimensions.x * 0.5f + (x * CellDimensions.x), (startY + CellDimensions.y * 0.5f + (y * CellDimensions.y)), Camera.main.nearClipPlane);
 				newColumn.Add(cell);
 			}
 			m_cells.Add(newColumn);
@@ -68,8 +68,7 @@ public class Grid : MonoBehaviour {
 				for (int x = 0; x < m_cells[y].Count; ++x) 
 				{
 					GridCell cell = m_cells[y][x];
-					Vector3 linePos = new Vector3(cell.GetPosition().x, cell.GetPosition().y, Camera.main.nearClipPlane);
-					Gizmos.DrawWireCube(linePos, new Vector3(CellDimensions.x, CellDimensions.y, 0f));
+					Gizmos.DrawWireCube(cell.GetPosition(), new Vector3(CellDimensions.x, CellDimensions.y, 0f));
 				}
 			}	
 		}		
@@ -84,11 +83,11 @@ public class Grid : MonoBehaviour {
 				for (int x = 0; x < m_cells[y].Count; ++x) 
 				{
 					GridCell cell = m_cells[y][x];
-					Vector3 worldPos = new Vector3(cell.GetPosition().x, cell.GetPosition().y + 0.8f, Camera.main.nearClipPlane);
+					Vector3 worldPos = new Vector3(cell.GetPosition().x, cell.GetPosition().y + 0.8f, cell.GetPosition().z);
 					Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos);
 					Rect screenRectangle = new Rect(screenPos.x - 18.0f, Screen.height - screenPos.y , 50.0f, 60.0f);
 
-					string text = "x: " + cell.GetPosition().x.ToString() + "\ny: " + cell.GetPosition().y.ToString() + "\nz: " + Camera.main.nearClipPlane.ToString();
+					string text = "x: " + cell.GetPosition().x.ToString() + "\ny: " + cell.GetPosition().y.ToString() + "\nz: " + cell.GetPosition().z.ToString();
 					GUI.Label(screenRectangle, text);
 				}
 			}	

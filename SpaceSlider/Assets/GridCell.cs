@@ -4,31 +4,21 @@ using System.Collections.Generic;
 
 public class GridCell
 {		
-	public enum CellType
-	{
-		Empty,
-		Movable,
-		NonMovable,
-		PowerUp,
-	};
-
-	private GameObject m_currentBlock;
-	private Vector2 m_position;
+	private Block m_currentBlock;
+	private Vector3 m_position;
 	private Vector2 m_dimensions;
-	private CellType m_cellType { get; set; }
 
 	public GridCell() 
 	{ 
-		m_cellType = CellType.Empty; 
 		m_currentBlock = null;
 	}
 
-	public void SetBlock(GameObject block) 
+	public void SetBlock(Block block) 
 	{ 
 		m_currentBlock = block; 
 	}
 
-	public GameObject GetBlock() 
+	public Block GetBlock() 
 	{ 
 		return m_currentBlock;
 	}
@@ -43,12 +33,13 @@ public class GridCell
 		return m_dimensions; 
 	}
 
-	public void SetPosition(float x, float y) 
+	public void SetPosition(float x, float y, float z) 
 	{ 
 		m_position.x = x; 
 		m_position.y = y; 
+		m_position.z = z; 
 	}
-	public Vector2 GetPosition() 
+	public Vector3 GetPosition() 
 	{ 
 		return m_position; 
 	}
@@ -66,16 +57,42 @@ public class GridCell
 
 	public void Update()
 	{	
-		Vector3 mousePos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10f));
-		if(Inside(mousePos.x, -mousePos.y))
+		if(Game.Instance.MapEditorMode)
 		{
 			if(Input.GetMouseButtonUp(0))
 			{
-				Debug.Log("MouseUp at position x: " + m_position.x.ToString() + "y: " + m_position.y.ToString());
-				string blockTypeId = "Block" + Random.Range(1, 4).ToString();
-				m_currentBlock = GameObjectPool.Instance.GetFromPool(blockTypeId, true);
-				m_currentBlock.transform.position = new Vector3(m_position.x, -m_position.y, Camera.main.nearClipPlane);			
+				Vector3 mousePos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10f));
+				if(Inside(mousePos.x, mousePos.y))
+				{
+					if(m_currentBlock == null)
+					{
+						string blockTypeId = "BlockPrefab" + Random.Range(1, 4).ToString();
+						GameObject block = GameObjectPool.Instance.GetFromPool(blockTypeId, true);
+						block.transform.position = m_position;
+						m_currentBlock = block.GetComponent<Block>();
+						m_currentBlock.SetParentCell(this);
+					}
+				}
 			}		
 		}
+		else
+		{
+			if(Input.GetMouseButton(0))
+			{
+				Vector3 mousePos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10f));
+				if(Inside(mousePos.x, -mousePos.y))
+				{	
+					if(m_currentBlock != null)
+					{
+						m_currentBlock.UpdateMovement();
+					}
+				}
+			}
+		}
+	}
+
+	void PromptBlockType()
+	{
+		
 	}
 };

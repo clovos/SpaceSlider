@@ -36,3 +36,7 @@ SpaceSlider/obj/Debug/Assembly-CSharp.dll
 SpaceSlider/Library/ScriptAssemblies/Assembly-CSharp.dll.mdb
 SpaceSlider/Assets/assets.unity
 SpaceSlider/Library/ScriptAssemblies/Assembly-CSharp.dll.mdb
+*.dll
+SpaceSlider/obj/Debug/Assembly-CSharp.pdb
+*.mdb
+SpaceSlider/obj/Debug/Assembly-CSharp.dll
