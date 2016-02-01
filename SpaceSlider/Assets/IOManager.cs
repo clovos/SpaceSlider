@@ -35,11 +35,6 @@ public class IOManager : MonoBehaviour
 					writer.WriteLine(cells[y][x].GetBlock().name);
 				else
 					writer.WriteLine("null");
-				
-//				writer.WriteLine(cells[y][x].GetPosition().x.ToString());
-//				writer.WriteLine(cells[y][x].GetPosition().y.ToString());
-//				writer.WriteLine(cells[y][x].GetDimensions().x.ToString());
-//				writer.WriteLine(cells[y][x].GetDimensions().y.ToString());
 			}
 		}
 		writer.Close();
@@ -131,6 +126,10 @@ public class IOManager : MonoBehaviour
 					{
 						GameObject block = GameObjectPool.Instance.GetFromPool(readLine, true);
 						block.transform.position = cell.GetPosition();
+
+						if(cell.GetBlock() != null)
+							GameObjectPool.Instance.AddToPool(cell.GetBlock().gameObject);	
+						
 						cell.SetBlock(block.GetComponent<Block>());		
 					}
 					newColumn.Add(cell);

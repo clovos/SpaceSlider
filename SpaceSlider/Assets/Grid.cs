@@ -97,6 +97,35 @@ public class Grid : MonoBehaviour {
 		return m_cells;
 	}
 
+	public GridCell GetCellFromScreenPosition(Vector2 position)
+	{
+		if(m_cells == null) { return null; }
+		Vector3 worldPos = Camera.main.ScreenToWorldPoint(new Vector3(position.x, position.y, -Camera.main.transform.position.z));
+		for (int y = 0; y < m_cells.Count; ++y) 
+		{
+			for (int x = 0; x < m_cells[y].Count; ++x) 
+			{
+				if(m_cells[y][x].Inside(worldPos.x, worldPos.y))
+					return m_cells[y][x];
+			}
+		}	
+		return null;
+	}
+
+	public GridCell GetCellFromWorldPosition(Vector3 position)
+	{
+		if(m_cells == null) { return null; }
+		for (int y = 0; y < m_cells.Count; ++y) 
+		{
+			for (int x = 0; x < m_cells[y].Count; ++x) 
+			{
+				if(m_cells[y][x].Inside(position.x, position.y))
+					return m_cells[y][x];
+			}
+		}	
+		return null;
+	}
+
 	void OnDrawGizmos()
 	{
 		if(ShowDebugLines)

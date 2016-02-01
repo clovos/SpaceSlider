@@ -17,8 +17,14 @@ public class GridCell
 
 	public void SetBlock(Block block) 
 	{ 
+		if(m_currentBlock)
+		{
+			m_currentBlock.SetParentCell(null);
+		}
+
 		m_currentBlock = block;
-		m_currentBlock.SetParentCell(this);
+		if(m_currentBlock)
+			m_currentBlock.SetParentCell(this);
 	}
 
 	public Block GetBlock() 
@@ -58,47 +64,14 @@ public class GridCell
 		return false;
 	}
 		
-	public void UpdateEditorInput()
-	{
-		if(Input.GetMouseButtonUp(0))
-		{
-			if(Input.mousePosition.x > Screen.width * 0.80 && Input.mousePosition.y > Screen.height - (Screen.height * 0.25))
-			{
-				return;
-			}
-			Vector3 mousePos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z));
-			if(Inside(mousePos.x, mousePos.y))
-			{
-				if(m_currentBlock == null)
-				{
-					string blockTypeId = "BlockPrefab" + Random.Range(1, 4).ToString();
-					GameObject block = GameObjectPool.Instance.GetFromPool(blockTypeId, true);
-					block.transform.position = m_position;
-					SetBlock(block.GetComponent<Block>());
-
-					GameObject grid = GameObject.Find("Grid");
-					Grid gridComponent = grid.GetComponent<Grid>();
-					gridComponent.SetIsSaved(false);
-				}
-				else
-				{
-					
-				}
-			}
-		}		
-	}
 	public void UpdateInput()
 	{
-		if(MapEditor.Instance)
-		{
-			UpdateEditorInput();
-		}
-		else
+		if(!MapEditor.Instance)
 		{
 			if(Input.GetMouseButton(0))
 			{
 				Vector3 mousePos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z));
-				if(Inside(mousePos.x, -mousePos.y))
+				if(Inside(mousePos.x, mousePos.y))
 				{	
 					if(m_currentBlock != null)
 					{
@@ -107,7 +80,6 @@ public class GridCell
 				}
 			}
 		}
-
 	}
 	public void Update()
 	{	

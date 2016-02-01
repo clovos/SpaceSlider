@@ -13,7 +13,12 @@ public class CameraMovement : MonoBehaviour {
 	void Start () 
 	{
 	}
-	
+
+	public Vector3 GetCurrentVelocity()
+	{
+		return m_currentVelocity;
+	}
+
 	// Update is called once per frame
 	void Update () 
     {

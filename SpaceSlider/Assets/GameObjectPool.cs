@@ -85,6 +85,7 @@ public class GameObjectPool : MonoBehaviour
 
 					GameObject instantiatedObject = Instantiate(m_poolOfObjects[i][0]) as GameObject;
 					instantiatedObject.transform.parent = null;
+					instantiatedObject.name = m_poolOfObjects[i][0].name;
 					instantiatedObject.SetActive(true);
 					return instantiatedObject;
 				}
@@ -129,7 +130,7 @@ public class GameObjectPool : MonoBehaviour
 	{
 		if(ShowDebugInfo)
 		{
-			Rect screenRectangle = new Rect(0, 0, 400.0f, 200.0f);
+			Rect screenRectangle = new Rect(5, 30, 400.0f, 200.0f);
 			string text = "GameObject Pool:\n";
 
 			int totalAvailableObjects = 0;
