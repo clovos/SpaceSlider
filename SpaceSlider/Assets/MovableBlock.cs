@@ -1,32 +1,15 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System;
+using UnityEngine;
 
-[System.Serializable]
-public class Block : MonoBehaviour {
+public class MovableBlock : BlockBase
+{
+	public float MovementSpeed;
 
-	[System.Serializable]
-	public enum BlockProperty
-	{
-		Empty,
-		Movable,
-		NonMovable,
-		PowerUp,
-		TotalAmountOfTypes
-	};
-
-	public BlockProperty BlockType;
-	private GridCell m_parentCell;
-
-	// Use this for initialization
-	void Start () 
-	{
-	}
-	
-	// Update is called once per frame
-	void Update () 
+	protected override void Update()
 	{
 		if(m_parentCell != null && !MapEditor.Instance)
 		{
+			base.Update();
 			Vector3 parentPos = m_parentCell.GetPosition();
 			Vector3 direction = (parentPos - transform.position);
 			float length = direction.sqrMagnitude;
@@ -35,16 +18,11 @@ public class Block : MonoBehaviour {
 			if(length < 0.05f)
 				transform.position = parentPos;
 			else
-				transform.position += direction * 2f * Time.deltaTime;
+				transform.position += direction * MovementSpeed * Time.deltaTime;
 		}
 	}
 
-	public void SetParentCell(GridCell parentCell)
-	{
-		m_parentCell = parentCell;
-	}
-
-	public void UpdateMovement()
+	public override void UpdateMovement()
 	{
 		if(m_parentCell != null)
 		{
@@ -52,7 +30,7 @@ public class Block : MonoBehaviour {
 			{
 				Vector3 currentScreenPos = Camera.main.WorldToScreenPoint(transform.position);
 				currentScreenPos.y = Mathf.Lerp(currentScreenPos.y, Input.mousePosition.y, Time.deltaTime * 25f);
-	
+
 				Vector3 currentWorldPos = Camera.main.ScreenToWorldPoint(currentScreenPos);
 				transform.position = currentWorldPos;
 
@@ -82,4 +60,8 @@ public class Block : MonoBehaviour {
 			}
 		}
 	}
+	public override void OnCollision()
+	{
+	}
 }
+

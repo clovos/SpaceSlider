@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 [System.Serializable]
+////////[ExecuteInEditMode]
 public class Grid : MonoBehaviour {
 
 	[System.Serializable]
@@ -22,10 +23,14 @@ public class Grid : MonoBehaviour {
 
 	void Awake()
 	{
+
+	}
+	void OnEnable()
+	{
 		Debug.Assert(Cells.X > 0 && Cells.Y > 0 && CellDimensions.x > 0 && CellDimensions.y > 0, "INVALID GRID! Gör om gör rätt!");
 
 		Vector3 centerPosition = Camera.main.transform.position;
-		float centerX = (Cells.X * CellDimensions.x) * 0.5f;
+		//float centerX = (Cells.X * CellDimensions.x) * 0.5f;
 		float centerY = (Cells.Y * CellDimensions.y) * 0.5f;
 		float startX = centerPosition.x;//centerPosition.x - centerX;
 		float startY = centerPosition.y - centerY;
@@ -42,15 +47,16 @@ public class Grid : MonoBehaviour {
 				newColumn.Add(cell);
 			}
 			m_cells.Add(newColumn);
-		}		
+		}			
 	}
-
 	void Start () 
 	{
+
 	}
 
 	void Update ()
 	{
+		if(m_cells == null) return;
 		for (int y = 0; y < m_cells.Count; ++y) 
 		{
 			for (int x = 0; x < m_cells[y].Count; ++x) 

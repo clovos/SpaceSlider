@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
+//////////[ExecuteInEditMode]
 public class GameObjectPool : MonoBehaviour
 {
     //A simple class that defines the prefab to hold in the pool and the amount of that gameobject
@@ -33,7 +34,7 @@ public class GameObjectPool : MonoBehaviour
 	//The holding gameobject / the container
 	private GameObject m_containerObject;
 
-	void Awake ()
+	void OnEnable ()
 	{
 		Instance = this;
 

@@ -18,21 +18,21 @@ public class BlockFactory
 		set { m_instance = value; }
 	}
 
-	public Block CreateBlock(Block.BlockProperty type)
+	public BlockBase CreateBlock(BlockBase.BlockProperty type)
 	{
 		string prefabName = null;
 
 		switch(type)
 		{
-		case Block.BlockProperty.Empty:
+		case BlockBase.BlockProperty.Empty:
 			break;
-		case Block.BlockProperty.Movable:
+		case BlockBase.BlockProperty.Movable:
 			prefabName = "Movable";
 			break;
-		case Block.BlockProperty.NonMovable:
+		case BlockBase.BlockProperty.NonMovable:
 			prefabName = "NonMovable";
 			break;
-		case Block.BlockProperty.PowerUp:
+		case BlockBase.BlockProperty.PowerUp:
 			prefabName = "PowerUp";
 			break;
 		default:
@@ -44,7 +44,7 @@ public class BlockFactory
 			GameObject block = GameObjectPool.Instance.GetFromPool(prefabName, true);
 			if(block == null)
 				return null;
-			return block.GetComponent<Block>();
+			return block.GetComponent<BlockBase>();
 		}
 		return null;
 	}

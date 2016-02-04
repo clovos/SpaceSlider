@@ -4,10 +4,9 @@ using System.Collections;
 public class CameraMovement : MonoBehaviour {
 
 	public bool ShowDebugInfo = false;
-
-    public Vector3 Velocity;
-	public float Acceleration;
-	private Vector3 m_currentVelocity;
+	[ShowOnly] public Vector3 CurrentVelocity  = new Vector3(0, 0, 0);
+	public Vector3 Velocity = new Vector3(0, 0, 0);
+	public float Acceleration = 0f;
 
 	// Use this for initialization
 	void Start () 
@@ -16,23 +15,23 @@ public class CameraMovement : MonoBehaviour {
 
 	public Vector3 GetCurrentVelocity()
 	{
-		return m_currentVelocity;
+		return CurrentVelocity;
 	}
 
 	// Update is called once per frame
-	void Update () 
+	void Update() 
     {
 		if(!MapEditor.Instance)
 		{
-			float currentSpeed = m_currentVelocity.sqrMagnitude;
+			float currentSpeed = CurrentVelocity.sqrMagnitude;
 			float targetSpeed = Velocity.sqrMagnitude;
-			if(Mathf.Abs(currentSpeed - targetSpeed) < 0.01f)
+			if(targetSpeed - currentSpeed < 0.0001f)
 			{
-				m_currentVelocity = Velocity;
+				CurrentVelocity = Velocity;
 			}
-			Vector3 target = Velocity - m_currentVelocity;
-			m_currentVelocity += (target.normalized * Acceleration * Time.deltaTime);
-			transform.position += m_currentVelocity;
+			Vector3 target = Velocity - CurrentVelocity;
+			CurrentVelocity += (target.normalized * Acceleration * Time.deltaTime);
+			transform.position += CurrentVelocity;
 		}
 		else
 		{
@@ -71,7 +70,7 @@ public class CameraMovement : MonoBehaviour {
 			Vector3 mousePos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z));
 			Rect screenRectangle = new Rect(0, Screen.height - 20, Screen.width, 20.0f);
 			string text = "Camera position(" + transform.position.x.ToString() + ", " + transform.position.y.ToString() + ", " + transform.position.z.ToString() + ")"
-				+ ", velocity(" + m_currentVelocity.x.ToString() + ", " + m_currentVelocity.y.ToString() + ", " + m_currentVelocity.z.ToString() + ")"
+				+ ", velocity(" + CurrentVelocity.x.ToString() + ", " + CurrentVelocity.y.ToString() + ", " + CurrentVelocity.z.ToString() + ")"
 				+ ", screenMousePos(" + Input.mousePosition.x.ToString() + ", " + Input.mousePosition.y.ToString() + ")"
 				+ ", worldMousePos(" + mousePos.x.ToString() + ", " + mousePos.y.ToString() + ")";
 			GUI.Label(screenRectangle, text);
