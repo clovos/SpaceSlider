@@ -40,7 +40,23 @@ public class LoadLevelScript : MonoBehaviour
 	}
 	public void SaveSelectedLevel()
 	{
-		m_ioManager.SaveFromPath(LoadedLevel.Path);
+		if(LoadedLevel.Name != null)
+		{
+			m_ioManager.SaveFromPath(LoadedLevel.Path);
+			return;
+		}
+		string path = m_ioManager.Save();
+		int index = path.LastIndexOf('/');
+		path = path.Substring(index + 1);
+		Levels = m_ioManager.GetLevelsInDirectory(Application.dataPath + "/Levels/");	
+		foreach(Level l in Levels)
+		{
+			if(path == l.Name)
+			{
+				LoadedLevel = l;
+				return;
+			}
+		}
 	}
 }
 

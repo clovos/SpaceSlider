@@ -65,26 +65,22 @@ public class GridCell
 		return false;
 	}
 		
-	public void UpdateInput()
+	public BlockBase UpdateInput()
 	{
-		if(!MapEditor.Instance)
-		{
+
 			if(Input.GetMouseButton(0))
 			{
 				Vector3 mousePos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z));
 				if(Inside(mousePos.x, mousePos.y))
 				{	
-					if(m_currentBlock != null)
-					{
-						m_currentBlock.UpdateMovement();
-					}
+					return m_currentBlock;
 				}
 			}
-		}
+		return null;
 	}
 	public void Update()
 	{	
-		UpdateInput();
+		//UpdateInput();
 	}
 
 	void PromptBlockType()

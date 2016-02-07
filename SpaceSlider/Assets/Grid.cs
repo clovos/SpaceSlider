@@ -20,6 +20,7 @@ public class Grid : MonoBehaviour {
 
 	private List<List<GridCell>> m_cells;
 	private bool m_isSaved = true;
+	private BlockBase m_selectedBlock;
 
 	void Awake()
 	{
@@ -56,14 +57,29 @@ public class Grid : MonoBehaviour {
 
 	void Update ()
 	{
-		if(m_cells == null) return;
-		for (int y = 0; y < m_cells.Count; ++y) 
+		if(!MapEditor.Instance)
 		{
-			for (int x = 0; x < m_cells[y].Count; ++x) 
+			if(m_cells == null) return;
+
+			if(m_selectedBlock == null)
 			{
-				m_cells[y][x].Update();
+				for (int y = 0; y < m_cells.Count; ++y) 
+				{
+					for (int x = 0; x < m_cells[y].Count; ++x) 
+					{
+						m_selectedBlock = m_cells[y][x].UpdateInput();
+						if(m_selectedBlock)
+							return;
+					}
+				}
 			}
-		}	
+			else
+			{
+				m_selectedBlock.UpdateMovement();
+				if(!Input.GetMouseButton(0))
+					m_selectedBlock = null;
+			}
+		}
 	}
 
 	public void SetIsSaved(bool isSaved)

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class MovableBlock : BlockBase
 {
-	public float MovementSpeed;
+	public float SlidingSpeed;
 
 	protected override void Update()
 	{
@@ -18,7 +18,7 @@ public class MovableBlock : BlockBase
 			if(length < 0.05f)
 				transform.position = parentPos;
 			else
-				transform.position += direction * MovementSpeed * Time.deltaTime;
+				transform.position += direction * SlidingSpeed * Time.deltaTime;
 		}
 	}
 
@@ -29,6 +29,14 @@ public class MovableBlock : BlockBase
 			if(BlockType == BlockProperty.Movable)
 			{
 				Vector3 currentScreenPos = Camera.main.WorldToScreenPoint(transform.position);
+
+				GameObject grid = GameObject.Find("Grid");
+				Grid gridComponent = grid.GetComponent<Grid>();
+				GridCell cellCheck = gridComponent.GetCellFromScreenPosition(new Vector2(currentScreenPos.x, Input.mousePosition.y));
+				if(cellCheck != null && cellCheck != m_parentCell)
+					if(cellCheck.GetBlock() != null)
+						return;
+
 				currentScreenPos.y = Mathf.Lerp(currentScreenPos.y, Input.mousePosition.y, Time.deltaTime * 25f);
 
 				Vector3 currentWorldPos = Camera.main.ScreenToWorldPoint(currentScreenPos);
@@ -42,8 +50,6 @@ public class MovableBlock : BlockBase
 				float limit = (m_parentCell.GetDimensions().y * 0.2f) * (m_parentCell.GetDimensions().y * 0.2f);
 				if(currentLenght >= limit)
 				{
-					GameObject grid = GameObject.Find("Grid");
-					Grid gridComponent = grid.GetComponent<Grid>();
 					Vector3 worldPos = m_parentCell.GetPosition();
 					worldPos += direction * m_parentCell.GetDimensions().y;
 

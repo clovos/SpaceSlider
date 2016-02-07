@@ -28,10 +28,11 @@ public class IOManager : MonoBehaviour
 		return levels;
 	}
 
-	public void Save()
+	public string Save()
 	{
 		string filePath = UnityEditor.EditorUtility.SaveFilePanel("Save current level", "/Assets/Levels/", "newLevel.lel", "lel");
 		SaveFromPath(filePath);
+		return filePath;
 	}
 
 	public void SaveFromPath(string filePath)
@@ -182,11 +183,13 @@ public class IOManager : MonoBehaviour
 	void OnGUI()
 	{
 		if(m_promptUnsavedLevel)
+
 			windowRect = GUI.Window(0, windowRect, PromptUnsavedLevel, "\nThe current changes haven't been saved.\nWould you like to save them now?");
 	}
 
 	void PromptUnsavedLevel(int windowId)
 	{
+		GUI.FocusWindow(windowId);
 		if(GUI.Button(new Rect((windowRect.width * 0.5f) - 100, 60, 80, 20), "Yes"))
 		{
 			m_promptUnsavedLevel = false;

@@ -9,11 +9,13 @@ public class MapEditor : MonoBehaviour {
 
 	public enum EditorDrawMode
 	{
-		DrawEmpty,
+		DontDraw,
 		DrawMovable,
 		DrawNonMovable,
 		DrawBoost,
-		DontDraw,
+		DrawLaneChangerUp,
+		DrawLaneChangerDown,
+		DrawEmpty,
 		Total
 	}
 		
@@ -126,6 +128,12 @@ public class MapEditor : MonoBehaviour {
 						case EditorDrawMode.DrawBoost:
 							block = BlockFactory.Instance.CreateBlock(BlockBase.BlockProperty.PowerUp);
 							break;
+						case EditorDrawMode.DrawLaneChangerUp:
+							block = BlockFactory.Instance.CreateBlock(BlockBase.BlockProperty.LaneChangerUp);
+							break;
+						case EditorDrawMode.DrawLaneChangerDown:
+							block = BlockFactory.Instance.CreateBlock(BlockBase.BlockProperty.LaneChangerDown);
+							break;
 						}
 						if(block != null)
 							block.transform.position = cell.GetPosition();
@@ -169,7 +177,8 @@ public class MapEditor : MonoBehaviour {
 
 				if(m_markedCell.GetBlock() != null)
 					GameObjectPool.Instance.AddToPool(m_markedCell.GetBlock().gameObject);	
-				
+
+				m_markedCell.SetBlock(block);
 				gridComponent.SetIsSaved(false);
 				m_menuOpen = false;
 				m_markedCell = null;
@@ -211,6 +220,11 @@ public class MapEditor : MonoBehaviour {
 	}
 
 	//Draw Mode Toggeling
+	public void ToggleDrawMode(int mode)
+	{
+		m_drawMode = (EditorDrawMode)mode;
+	}
+
 	public void ToggleDrawEmpty(bool flag)
 	{
 		if(flag)

@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 [System.Serializable]
-public class BlockBase : MonoBehaviour {
+public class BlockBase : MonoBehaviour 
+{
 
 	[System.Serializable]
 	public enum BlockProperty
@@ -11,6 +13,8 @@ public class BlockBase : MonoBehaviour {
 		Movable,
 		NonMovable,
 		PowerUp,
+		LaneChangerUp,
+		LaneChangerDown,
 		TotalAmountOfTypes
 	};
 

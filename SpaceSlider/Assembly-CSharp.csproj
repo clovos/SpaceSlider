@@ -56,6 +56,7 @@
      <Compile Include="Assets\GridCell.cs" />
      <Compile Include="Assets\IOManager.cs" />
      <Compile Include="Assets\InGameState.cs" />
+     <Compile Include="Assets\LaneChangerBlock.cs" />
      <Compile Include="Assets\LoadLevelEditor.cs" />
      <Compile Include="Assets\LoadLevelScript.cs" />
      <Compile Include="Assets\MapEditor.cs" />
