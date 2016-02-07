@@ -163,7 +163,7 @@ NonMovable
 null
 NonMovable
 null
-null
+Movable
 null
 null
 Movable
@@ -227,7 +227,7 @@ null
 Movable
 Movable
 Movable
-PowerUp
+null
 LaneChangerDown
 NonMovable
 null

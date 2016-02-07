@@ -20,8 +20,6 @@ public class MapEditor : MonoBehaviour {
 	}
 		
 	public static MapEditor Instance { get; private set; }
-	public bool Active = true;
-
 	private bool m_menuOpen = false;
 	private Rect m_menuRect;
 
@@ -32,37 +30,37 @@ public class MapEditor : MonoBehaviour {
 	void OnEnable()
 	{
 		Instance = this;
-		Active = true;
+		for(int i = 0; i < transform.childCount; ++i)
+			transform.GetChild(i).gameObject.SetActive(true);
 	}
-	// Use this for initialization
+	void OnDisable()
+	{
+		Instance = null;
+		for(int i = 0; i < transform.childCount; ++i)
+			transform.GetChild(i).gameObject.SetActive(false);
+	}
+
 	void Start () 
 	{
-
-	}
-
-
-	public void SetActive(bool flag)
-	{
-		Active = flag;
 	}
 
 	// Update is called once per frame
 	void Update () 
 	{
-		if(!Active)
-		{
-			Instance = null;		
-			for(int i = 0; i < transform.childCount; ++i)
-				transform.GetChild(i).gameObject.SetActive(false);
-			return;
-		}
-		if(Instance == null)
-		{
-			Instance = this;
-			for(int i = 0; i < transform.childCount; ++i)
-				transform.GetChild(i).gameObject.SetActive(true);
-		}
-
+//		if(!Active)
+//		{
+//			Instance = null;		
+//			for(int i = 0; i < transform.childCount; ++i)
+//				transform.GetChild(i).gameObject.SetActive(false);
+//			return;
+//		}
+//		if(Instance == null)
+//		{
+//			Instance = this;
+//			for(int i = 0; i < transform.childCount; ++i)
+//				transform.GetChild(i).gameObject.SetActive(true);
+//		}
+//
 		if(m_drawMode == EditorDrawMode.DontDraw)
 		{
 			if(Input.GetMouseButtonDown(0))
@@ -163,7 +161,6 @@ public class MapEditor : MonoBehaviour {
 	{	
 		float spacing = 20f;
 		float boxWidth = 140f;
-		//Vector2 mousePos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
 		for (int i = 0; i < (int)BlockBase.BlockProperty.TotalAmountOfTypes; ++i) 
 		{
 			if(GUI.Button(new Rect((m_menuRect.width * 0.5f) - 70f, 40f + (spacing * i), boxWidth, 20), ((BlockBase.BlockProperty)i).ToString()))

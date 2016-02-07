@@ -57,13 +57,14 @@ public class PlayerMovement : MonoBehaviour {
 		camPos.z = transform.position.z;
 
 		float distance = Mathf.Abs(camPos.x - transform.position.x);
-		float drag = distance / MaximumDistance;
 		if(distance < MaximumDistance)
 		{
 			Vector3 vel_diff = Camera.main.GetComponent<CameraMovement>().GetCurrentVelocity() - m_currentVelocity;
 			m_currentVelocity += vel_diff * Time.deltaTime;
 			return;
 		}
+
+		float drag = distance / MaximumDistance;
 		Vector3 direction = (camPos - transform.position).normalized;
 		m_currentVelocity += (direction * Acceleration * Time.deltaTime) * drag;
 	}

@@ -1,17 +1,10 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\SlowPowerUpBlock.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\MapEditor.cs">
     <Files>
-      <File FileName="Assets\PowerUpBlock.cs" Line="13" Column="38" />
-      <File FileName="Assets\SlowPowerUpBlock.cs" Line="3" Column="1" />
-      <File FileName="Assets\MovableBlock.cs" Line="62" Column="3" />
-      <File FileName="Assets\BlockFactory.cs" Line="28" Column="10" />
-      <File FileName="Assets\PlayerMovement.cs" Line="55" Column="68" />
-      <File FileName="Assets\CameraMovement.cs" Line="82" Column="2" />
-      <File FileName="Assets\BlockBase.cs" Line="35" Column="8" />
-      <File FileName="Assets\Grid.cs" Line="33" Column="5" />
-      <File FileName="Assets\IOManager.cs" Line="96" Column="5" />
-      <File FileName="Assets\MapEditor.cs" Line="158" Column="52" />
+      <File FileName="Assets\SlowPowerUpBlock.cs" Line="12" Column="2" />
+      <File FileName="Assets\PlayerMovement.cs" Line="31" Column="23" />
+      <File FileName="Assets\MapEditor.cs" Line="245" Column="39" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
